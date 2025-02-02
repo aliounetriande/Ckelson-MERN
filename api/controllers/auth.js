@@ -53,7 +53,9 @@ export const login = (req, res) => {
         const { password, ...other } = data[0];
 
         res.cookie("access_token", token, {
-            httpOnly: true
+            httpOnly: true,
+            sameSite: "lax", // Évite les blocages
+            maxAge: 7 * 24 * 60 * 60 * 1000, // Durée d'une semaine
         })
         .status(200)
         .json(other);

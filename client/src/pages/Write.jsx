@@ -18,7 +18,9 @@ const Write = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await axios.post("http://localhost:8080/api/upload", formData);
+      const res = await axios.post("http://localhost:8080/api/upload", formData, {
+        withCredentials: true, //  Permet d'envoyer le cookie d'auth
+      });
       return res.data;
     } catch (err) {
       console.log(err);
@@ -31,18 +33,20 @@ const Write = () => {
 
     try {
       state
-        ? await axios.put(`/posts/${state.id}`, {
+        ? await axios.put(`http://localhost:8080/api/posts/${state.id}`, {
             title,
             desc: value,
             cat,
             img: file ? imgUrl : "",
           })
-        : await axios.post(`/posts/`, {
+        : await axios.post(`http://localhost:8080/api/posts/`, {
             title,
             desc: value,
             cat,
             img: file ? imgUrl : "",
             date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+          }, {
+            withCredentials: true, // 🔥 Permet d'envoyer le cookie d'auth
           });
           navigate("/")
     } catch (err) {
